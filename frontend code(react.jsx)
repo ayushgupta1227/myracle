@@ -1,0 +1,47 @@
+import React, { useState } from 'react';
+
+function TestingInstructionsTool() {
+  const [context, setContext] = useState('');
+  const [images, setImages] = useState([]);
+  const [result, setResult] = useState(null);
+
+  const handleImageUpload = (event) => {
+    const uploadedImages = Array.from(event.target.files);
+    setImages(uploadedImages);
+  };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    images.forEach((image, index) => formData.append(`screenshot${index}`, image));
+    formData.append('context', context);
+
+    const response = await fetch('/api/generate-test-cases', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await response.json();
+    setResult(data);
+  };
+
+  return (
+    <div>
+      <h2>Describe Testing Instructions</h2>
+      <textarea
+        placeholder="Optional context for the feature"
+        value={context}
+        onChange={(e) => setContext(e.target.value)}
+      />
+      <input type="file" multiple accept="image/*" onChange={handleImageUpload} />
+      <button onClick={handleSubmit}>Describe Testing Instructions</button>
+
+      {result && (
+        <div>
+          <h3>Generated Test Cases:</h3>
+          <pre>{JSON.stringify(result, null, 2)}</pre>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default TestingInstructionsTool;
