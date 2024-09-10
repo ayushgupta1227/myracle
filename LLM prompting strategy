@@ -1,0 +1,8 @@
+Test Case:
+Description: Verify that the user can select a bus from the list.
+Pre-conditions: The user has selected the source, destination, and date of travel.
+Steps:
+1. Navigate to the bus selection page.
+2. Select a bus from the available options.
+3. Verify the selected bus details are displayed.
+Expected Result: The correct bus details should be shown after selection.
